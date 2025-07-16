@@ -21,7 +21,7 @@ export default function EditEvent({ params }: EditEventProps) {
   const [event, setEvent] = useState<any>(null)
 
   const sidebarItems = [
-    { id: "overview", label: "Overview", icon: Home, href: "/admin/overview" },
+    { id: "overview", label: "Dashboard", icon: Home, href: "/admin/overview" },
     { id: "events", label: "Events", icon: Calendar, href: "/admin/events" },
     { id: "venues", label: "Venues", icon: MapPin, href: "/admin/venues" },
     { id: "users", label: "Users", icon: UsersIcon, href: "/admin/users" },

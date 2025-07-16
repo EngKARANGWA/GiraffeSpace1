@@ -12,6 +12,8 @@ import {
   AlertTriangle,
   Wallet,
   Building,
+  Check,
+  X,
 } from "lucide-react"
 import ApiService from "@/api/apiConfig"
 import { useToast } from "@/hooks/use-toast"
@@ -106,6 +108,14 @@ export default function AdminOverview() {
     totalPayments: 0, // Placeholder for total payments
   }
 
+  // Sample data for booking requests table
+  const bookingsData = [
+    { id: 1, event: "Corporate Event", customer: "John Doe", customerEmail: "john@example.com", venue: "Venue A", date: "2024-07-15", time: "10:00 AM", status: "Pending" },
+    { id: 2, event: "Wedding Ceremony", customer: "Jane Smith", customerEmail: "jane@example.com", venue: "Venue B", date: "2024-07-20", time: "02:00 PM", status: "Pending" },
+    { id: 3, event: "Birthday Party", customer: "Acme Corp.", customerEmail: "info@acme.com", venue: "Venue A", date: "2024-07-25", time: "05:00 PM", status: "Approved" },
+    { id: 4, event: "Conference", customer: "Tech Solutions", customerEmail: "contact@techsol.com", venue: "Venue B", date: "2024-07-30", time: "09:00 AM", status: "Rejected" },
+  ];
+
   return (
     <div className="flex-1 p-8">
       <h2 className="text-2xl font-bold mb-4"> Venue Manager</h2>
@@ -198,14 +208,7 @@ export default function AdminOverview() {
                       onClick={() => alert(`Approved payment for ${payment.payer}`)}
                       title="Approve"
                     >
-                      ✓
-                    </button>
-                    <button
-                      className="px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200"
-                      onClick={() => alert(`Rejected payment for ${payment.payer}`)}
-                      title="Reject"
-                    >
-                      ✗
+                      Approve
                     </button>
                   </div>
                 </div>
@@ -213,63 +216,104 @@ export default function AdminOverview() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Pending Events Section (API data) */}
+        {/* Booking Requests Table (replaces Pending Event Approvals) */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Clock className="h-5 w-5 mr-2" />
-              Pending Booking Approvals
+              Booking Requests
             </CardTitle>
-            <CardDescription>Events waiting for approval</CardDescription>
+            <CardDescription>Manage and approve booking requests for your venues</CardDescription>
           </CardHeader>
           <CardContent>
-            {loading ? (
-              <div className="flex items-center justify-center min-h-[100px]">Loading...</div>
-            ) : error ? (
-              <div className="text-red-500 text-center">{error}</div>
-            ) : (
-              <>
-                <div className="space-y-4">
-                  {paginatedEvents.length > 0 ? (
-                    paginatedEvents.map((event) => (
-                      <div
-                        key={event.eventId}
-                        className="flex items-center justify-between p-3 border rounded-lg"
-                      >
-                        <div>
-                          <p className="font-medium">{event.eventTitle}</p>
-                          <p className="text-sm text-gray-600">{event.startDate ? new Date(event.startDate).toLocaleDateString() : "-"}</p>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline" onClick={() => handleApproveEvent(event.eventId)}>
-                            <CheckCircle className="h-4 w-4 text-green-600" />
-                          </Button>
-                          <Button size="sm" variant="outline" onClick={() => handleRejectEvent(event.eventId)}>
-                            <XCircle className="h-4 w-4 text-red-600" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500 text-center py-4">No pending booking approvals</p>
-                  )}
-                </div>
-                {/* Pagination controls */}
-                {totalEventPages > 1 && (
-                  <div className="flex justify-end gap-2 mt-4">
-                    <Button size="sm" variant="outline" disabled={eventPage === 1} onClick={() => setEventPage(eventPage - 1)}>
-                      Previous
-                    </Button>
-                    <span className="px-2 py-1 text-sm">
-                      Page {eventPage} of {totalEventPages}
-                    </span>
-                    <Button size="sm" variant="outline" disabled={eventPage === totalEventPages} onClick={() => setEventPage(eventPage + 1)}>
-                      Next
-                    </Button>
+            <div className="border rounded-lg overflow-hidden">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Venue</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {bookingsData.map((booking) => (
+                    <tr key={booking.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{booking.event}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{booking.customer}</div>
+                        <div className="text-xs text-gray-500">{booking.customerEmail}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{booking.venue}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{booking.date}</div>
+                        <div className="text-xs text-gray-500">{booking.time}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${booking.status === "Approved" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>{booking.status}</span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        {booking.status === "Pending" ? (
+                          <div className="flex space-x-2">
+                            <button className="text-green-600 hover:text-green-900">
+                              <Check className="h-5 w-5" />
+                            </button>
+                            <button className="text-red-600 hover:text-red-900">
+                              <X className="h-5 w-5" />
+                            </button>
+                          </div>
+                        ) : (
+                          <button className="text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md">
+                            View
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+        {/* Pending Venue Approvals Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Building className="h-5 w-5 mr-2" />
+              Pending Venue Approvals
+            </CardTitle>
+            <CardDescription>Venues waiting for approval</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {paginatedVenues.length > 0 ? (
+                paginatedVenues.map((venue) => (
+                  <div
+                    key={venue.venueId}
+                    className="flex items-center justify-between p-3 border rounded-lg"
+                  >
+                    <div>
+                      <p className="font-medium">{venue.venueName}</p>
+                      <p className="text-sm text-gray-600">{venue.location || "-"}</p>
+                    </div>
                   </div>
-                )}
-              </>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center py-4">No pending venue approvals</p>
+              )}
+            </div>
+            {/* Pagination controls */}
+            {totalVenuePages > 1 && (
+              <div className="flex justify-end gap-2 mt-4">
+                <Button size="sm" variant="outline" disabled={venuePage === 1} onClick={() => setVenuePage(venuePage - 1)}>Previous</Button>
+                <span className="px-2 py-1 text-sm">Page {venuePage} of {totalVenuePages}</span>
+                <Button size="sm" variant="outline" disabled={venuePage === totalVenuePages} onClick={() => setVenuePage(venuePage + 1)}>Next</Button>
+              </div>
             )}
           </CardContent>
         </Card>

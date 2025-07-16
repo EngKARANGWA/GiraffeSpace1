@@ -10,6 +10,9 @@ import {
   XCircle,
   Clock,
   AlertTriangle,
+  Users,
+  Wallet,
+  Building2,
 } from "lucide-react"
 import ApiService from "@/api/apiConfig"
 import { useToast } from "@/hooks/use-toast"
@@ -105,60 +108,50 @@ export default function AdminOverview() {
     <div className="flex-1 p-8">
       <h2 className="text-2xl font-bold mb-4">Admin Overview</h2>
       {/* Statistics Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Events</p>
-                <p className="text-2xl font-bold">{stats.totalEvents}</p>
-              </div>
-              <Calendar className="h-8 w-8 text-green-600" />
+          <CardContent className="flex items-center justify-between p-6">
+            <div>
+              <p className="text-sm text-gray-600">All Venues</p>
+              <p className="text-2xl font-bold">60</p>
             </div>
+            <MapPin className="h-8 w-8 text-blue-600" />
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Total Venues</p>
-                <p className="text-2xl font-bold">{stats.totalVenues}</p>
-              </div>
-              <MapPin className="h-8 w-8 text-purple-600" />
+          <CardContent className="flex items-center justify-between p-6">
+            <div>
+              <p className="text-sm text-gray-600">All Users</p>
+              <p className="text-2xl font-bold">10,000</p>
             </div>
+            <Users className="h-8 w-8 text-green-600" />
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Pending Approvals</p>
-                <p className="text-2xl font-bold">{stats.pendingApprovals}</p>
-              </div>
-              <AlertTriangle className="h-8 w-8 text-orange-600" />
+          <CardContent className="flex items-center justify-between p-6">
+            <div>
+              <p className="text-sm text-gray-600">Amount Paid</p>
+              <p className="text-2xl font-bold">Frw 8,000,000</p>
             </div>
+            <Wallet className="h-8 w-8 text-yellow-600" />
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Approved Events</p>
-                <p className="text-2xl font-bold">{stats.approvedEvents}</p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-blue-600" />
+          <CardContent className="flex items-center justify-between p-6">
+            <div>
+              <p className="text-sm text-gray-600">Total Events</p>
+              <p className="text-2xl font-bold">400</p>
             </div>
+            <Calendar className="h-8 w-8 text-purple-600" />
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Approved Venues</p>
-                <p className="text-2xl font-bold">{stats.approvedVenues}</p>
-              </div>
-              <CheckCircle className="h-8 w-8 text-green-600" />
+          <CardContent className="flex items-center justify-between p-6">
+            <div>
+              <p className="text-sm text-gray-600">Total Organizations</p>
+              <p className="text-2xl font-bold">120</p>
             </div>
+            <Building2 className="h-8 w-8 text-pink-600" />
           </CardContent>
         </Card>
       </div>
